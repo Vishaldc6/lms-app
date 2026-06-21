@@ -1,4 +1,4 @@
-import { Dimensions, PixelRatio, useWindowDimensions, StyleSheet } from 'react-native';
+import { Dimensions, PixelRatio, useWindowDimensions } from 'react-native';
 
 export const widthPercentageToDP = (widthPercent: string | number): number => {
   const screenWidth = Dimensions.get('window').width;
@@ -21,6 +21,7 @@ export const hp = heightPercentageToDP;
  */
 export function useResponsive() {
   const { width, height } = useWindowDimensions();
+  const shortDimension = width < height ? width : height;
 
   const dynamicWp = (widthPercent: string | number): number => {
     const elemWidth = typeof widthPercent === 'number' ? widthPercent : parseFloat(widthPercent);
@@ -32,9 +33,16 @@ export function useResponsive() {
     return PixelRatio.roundToNearestPixel((height * elemHeight) / 100);
   };
 
+  // Scales values relative to the smaller dimension of the device (stays stable when rotating)
+  const scale = (percent: string | number): number => {
+    const val = typeof percent === 'number' ? percent : parseFloat(percent);
+    return PixelRatio.roundToNearestPixel((shortDimension * val) / 100);
+  };
+
   return {
     wp: dynamicWp,
     hp: dynamicHp,
+    scale,
     width,
     height,
     isLandscape: width > height,

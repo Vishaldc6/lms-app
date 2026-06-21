@@ -34,7 +34,33 @@ export async function login(payload: LoginPayload): Promise<ApiUser> {
 // Get Current User
 export async function getCurrentUser(): Promise<ApiUser> {
   const { data } = await apiClient.get<ApiResponse<ApiUser>>(
-    '/api/v1/users/current',
+    '/api/v1/users/current-user',
+  );
+
+  return data.data;
+}
+
+// Update Avatar
+export async function updateAvatar(
+  imageUri: string,
+  mimeType: string,
+  fileName: string,
+): Promise<ApiUser> {
+  const formData = new FormData();
+  formData.append('avatar', {
+    uri: imageUri,
+    name: fileName || 'avatar.jpg',
+    type: mimeType || 'image/jpeg',
+  } as any);
+
+  const { data } = await apiClient.patch<ApiResponse<ApiUser>>(
+    '/api/v1/users/avatar',
+    formData,
+    {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    },
   );
 
   return data.data;

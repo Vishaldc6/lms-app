@@ -10,7 +10,7 @@ import {
 import { useTheme } from '@/hooks/use-theme';
 import { useResponsive } from '@/lib/responsive';
 
-type ButtonVariant = 'primary' | 'outline' | 'ghost';
+type ButtonVariant = 'primary' | 'outline' | 'ghost' | 'error';
 
 interface ButtonProps {
   title: string;
@@ -63,7 +63,7 @@ function getButtonStyles(
 ): ViewStyle {
   if (disabled) {
     return {
-      backgroundColor: variant === 'primary' ? colors.disabled : 'transparent',
+      backgroundColor: variant === 'primary' || variant === 'error' ? colors.disabled : 'transparent',
       borderColor: variant === 'outline' ? colors.disabled : 'transparent',
       borderWidth: variant === 'outline' ? 1 : 0,
     };
@@ -72,6 +72,8 @@ function getButtonStyles(
   switch (variant) {
     case 'primary':
       return { backgroundColor: colors.primary };
+    case 'error':
+      return { backgroundColor: colors.error };
     case 'outline':
       return {
         backgroundColor: 'transparent',
@@ -88,8 +90,8 @@ function getTextColor(
   colors: ReturnType<typeof useTheme>,
   disabled: boolean,
 ): string {
-  if (disabled && variant !== 'primary') return colors.disabled;
-  if (variant === 'primary') return '#FFFFFF';
+  if (disabled && variant !== 'primary' && variant !== 'error') return colors.disabled;
+  if (variant === 'primary' || variant === 'error') return '#FFFFFF';
   return colors.primary;
 }
 

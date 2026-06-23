@@ -82,29 +82,21 @@ export const CourseCard = memo(
             />
           </Pressable>
           {/* Price Tag Badge */}
-          <View
-            style={[styles.priceBadge, { backgroundColor: colors.primary }]}
-          >
+          <View style={styles.priceBadge}>
             <Text style={styles.priceText}>${item.price}</Text>
           </View>
         </View>
 
         <View style={styles.cardContent}>
-          <Text style={[styles.categoryText, { color: colors.primary }]}>
+          <Text style={styles.categoryText}>
             {item.category.toUpperCase().replace("-", " ")}
           </Text>
 
-          <Text
-            style={[styles.courseTitle, { color: colors.text }]}
-            numberOfLines={2}
-          >
+          <Text style={styles.courseTitle} numberOfLines={2}>
             {item.title}
           </Text>
 
-          <Text
-            style={[styles.courseDescription, { color: colors.textSecondary }]}
-            numberOfLines={2}
-          >
+          <Text style={styles.courseDescription} numberOfLines={2}>
             {item.description}
           </Text>
 
@@ -118,18 +110,10 @@ export const CourseCard = memo(
                 transition={200}
               />
               <View style={styles.instructorInfo}>
-                <Text
-                  style={[
-                    styles.instructorLabel,
-                    { color: colors.textSecondary },
-                  ]}
-                >
+                <Text style={styles.instructorLabel}>
                   Instructor
                 </Text>
-                <Text
-                  style={[styles.instructorName, { color: colors.text }]}
-                  numberOfLines={1}
-                >
+                <Text style={styles.instructorName} numberOfLines={1}>
                   {`${instructor.name.first} ${instructor.name.last}`}
                 </Text>
               </View>
@@ -200,6 +184,7 @@ const useStyles = () => {
       paddingHorizontal: wp("3%"),
       paddingVertical: hp("0.5%"),
       borderRadius: scale("2%"),
+      backgroundColor: colors.primary,
     },
     priceText: {
       color: "#FFFFFF",
@@ -214,17 +199,20 @@ const useStyles = () => {
       fontWeight: "700",
       letterSpacing: 1,
       marginBottom: hp("0.5%"),
+      color: colors.primary,
     },
     courseTitle: {
       fontSize: scale("4.5%"),
       fontWeight: "700",
       lineHeight: scale("5.8%"),
       marginBottom: hp("1%"),
+      color: colors.text,
     },
     courseDescription: {
       fontSize: scale("3.5%"),
       lineHeight: scale("4.8%"),
       marginBottom: hp("2%"),
+      color: colors.textSecondary,
     },
     instructorContainer: {
       flexDirection: "row",
@@ -246,11 +234,13 @@ const useStyles = () => {
     instructorLabel: {
       fontSize: scale("2.8%"),
       fontWeight: "500",
+      color: colors.textSecondary,
     },
     instructorName: {
       fontSize: scale("3.5%"),
       fontWeight: "600",
       marginTop: 1,
+      color: colors.text,
     },
   });
 };

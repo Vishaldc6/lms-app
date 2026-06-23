@@ -1,8 +1,8 @@
 import { Ionicons } from "@expo/vector-icons";
+import { LegendList } from "@legendapp/list/react-native";
 import { useCallback } from "react";
 import {
   ActivityIndicator,
-  FlatList,
   Keyboard,
   Pressable,
   RefreshControl,
@@ -39,7 +39,6 @@ export default function HomeScreen() {
     loadMore,
     retry,
   } = useCourses();
-  console.log({ courses, instructors });
 
   // Render Single Course Item
   const renderCourseItem = useCallback(
@@ -64,10 +63,8 @@ export default function HomeScreen() {
   const renderHeader = useCallback(
     () => (
       <View style={styles.headerSection}>
-        <Text style={[styles.screenTitle, { color: colors.text }]}>
-          Find Your Next Skill
-        </Text>
-        <Text style={[styles.screenSubtitle, { color: colors.textSecondary }]}>
+        <Text style={styles.screenTitle}>Find Your Next Skill</Text>
+        <Text style={styles.screenSubtitle}>
           Discover world-class courses taught by expert instructors.
         </Text>
 
@@ -83,10 +80,10 @@ export default function HomeScreen() {
             onChangeText={handleSearchChange}
             placeholder="Search courses, categories, topics..."
             placeholderTextColor={colors.placeholder}
-            style={[styles.searchInput, { color: colors.text }]}
+            style={styles.searchInput}
             autoCapitalize="none"
             autoCorrect={false}
-            clearButtonMode="while-editing"
+            returnKeyType="search"
           />
           {searchQuery.length > 0 && (
             <Pressable
@@ -106,23 +103,20 @@ export default function HomeScreen() {
     [searchQuery],
   );
 
+  const barStyle =
+    colors.background === "#ffffff" ? "dark-content" : "light-content";
+
   // Render content depending on loading/error states
   return (
     <SafeAreaView style={styles.safe} edges={["top", "left", "right"]}>
-      <StatusBar
-        barStyle={
-          colors.background === "#ffffff" ? "dark-content" : "light-content"
-        }
-      />
+      <StatusBar barStyle={barStyle} />
 
       {renderHeader()}
 
       {loading ? (
         <View style={styles.centerContainer}>
           <ActivityIndicator size="large" color={colors.primary} />
-          <Text style={[styles.statusText, { color: colors.textSecondary }]}>
-            Loading courses...
-          </Text>
+          <Text style={styles.statusText}>Loading courses...</Text>
         </View>
       ) : error ? (
         <View style={styles.centerContainer}>
@@ -131,18 +125,13 @@ export default function HomeScreen() {
             size={54}
             color={colors.error}
           />
-          <Text style={[styles.errorText, { color: colors.error }]}>
-            {error}
-          </Text>
-          <Pressable
-            style={[styles.retryButton, { backgroundColor: colors.primary }]}
-            onPress={retry}
-          >
+          <Text style={[styles.subText, styles.errorText]}>{error}</Text>
+          <Pressable style={styles.retryButton} onPress={retry}>
             <Text style={styles.retryButtonText}>Retry</Text>
           </Pressable>
         </View>
       ) : (
-        <FlatList
+        <LegendList
           data={courses}
           keyExtractor={(item) => item.id.toString()}
           renderItem={renderCourseItem}
@@ -174,12 +163,10 @@ export default function HomeScreen() {
                 size={54}
                 color={colors.placeholder}
               />
-              <Text style={[styles.errorText, { color: colors.textSecondary }]}>
+              <Text style={[styles.subText, styles.emptyText]}>
                 No courses found
               </Text>
-              <Text
-                style={[styles.emptySubtitle, { color: colors.placeholder }]}
-              >
+              <Text style={styles.emptySubtitle}>
                 Try adjusting your search query to find what you need.
               </Text>
             </View>
@@ -208,12 +195,14 @@ const useStyles = () => {
       fontSize: scale("6.5%"),
       fontWeight: "800",
       letterSpacing: -0.5,
+      color: colors.text,
     },
     screenSubtitle: {
       fontSize: scale("3.8%"),
       marginTop: hp("0.5%"),
       marginBottom: hp("2%"),
       lineHeight: scale("5%"),
+      color: colors.textSecondary,
     },
     searchContainer: {
       flexDirection: "row",
@@ -232,6 +221,7 @@ const useStyles = () => {
       flex: 1,
       fontSize: scale("4%"),
       height: "100%",
+      color: colors.text,
     },
     clearButton: {
       padding: 4,
@@ -256,23 +246,32 @@ const useStyles = () => {
       fontSize: scale("3.8%"),
       marginTop: hp("1.5%"),
       fontWeight: "500",
+      color: colors.textSecondary,
     },
-    errorText: {
+    subText: {
       fontSize: scale("4%"),
       fontWeight: "600",
       textAlign: "center",
       marginTop: hp("2%"),
     },
+    errorText: {
+      color: colors.error,
+    },
+    emptyText: {
+      color: colors.textSecondary,
+    },
     emptySubtitle: {
       fontSize: scale("3.5%"),
       textAlign: "center",
       marginTop: hp("1%"),
+      color: colors.placeholder,
     },
     retryButton: {
       marginTop: hp("2%"),
       paddingHorizontal: wp("6%"),
       paddingVertical: hp("1.2%"),
       borderRadius: scale("2.5%"),
+      backgroundColor: colors.primary,
     },
     retryButtonText: {
       color: "#FFFFFF",

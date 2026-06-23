@@ -44,6 +44,13 @@ function NavigationGuard() {
           presentation: "modal",
         }}
       />
+      <Stack.Screen
+        name="course/content"
+        options={{
+          headerShown: false,
+          presentation: "modal",
+        }}
+      />
     </Stack>
   );
 }

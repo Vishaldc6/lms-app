@@ -181,6 +181,31 @@ export default function CourseDetailScreen() {
 
           <View style={styles.divider} />
 
+          {/* View Content Button */}
+          <Pressable
+            style={[styles.contentButton, { borderColor: colors.primary }]}
+            onPress={() =>
+              router.push({
+                pathname: "/course/content",
+                params: {
+                  id: course.id,
+                  title: course.title,
+                  description: course.description,
+                  instructorName: instructor
+                    ? `${instructor.name.first} ${instructor.name.last}`
+                    : "Expert Instructor",
+                },
+              })
+            }
+          >
+            <Ionicons name="play-circle-outline" size={20} color={colors.primary} />
+            <Text style={[styles.contentButtonText, { color: colors.primary }]}>
+              View Course Syllabus & Modules
+            </Text>
+          </Pressable>
+
+          <View style={styles.divider} />
+
           {/* Instructor Details */}
           {instructor && (
             <View style={styles.instructorSection}>
@@ -393,6 +418,20 @@ const useStyles = () => {
       fontSize: scale("3.8%"),
       lineHeight: scale("5.5%"),
       color: colors.textSecondary,
+    },
+    contentButton: {
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "center",
+      borderWidth: 1.5,
+      borderRadius: scale("3.5%"),
+      height: 48,
+      gap: wp("2%"),
+      marginVertical: hp("1%"),
+    },
+    contentButtonText: {
+      fontWeight: "700",
+      fontSize: scale("3.8%"),
     },
     instructorSection: {
       marginBottom: hp("2%"),

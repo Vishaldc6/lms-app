@@ -1,10 +1,5 @@
-/**
- * Course-related API endpoints.
- *
- * Maps the public "random" endpoints to LMS concepts:
- *   • randomusers   → course instructors
- *   • randomproducts → courses
- */
+// Course-related API endpoints.
+
 import { apiClient } from './client';
 import type {
   ApiRandomProduct,
@@ -13,8 +8,7 @@ import type {
   PaginatedData,
 } from './types';
 
-// ─── Pagination defaults ────────────────────────────────────────────────────
-
+// Pagination defaults
 interface PaginationParams {
   page?: number;
   limit?: number;
@@ -23,7 +17,7 @@ interface PaginationParams {
 const DEFAULT_PAGE = 1;
 const DEFAULT_LIMIT = 10;
 
-// ─── Instructors (Random Users) ─────────────────────────────────────────────
+// Instructors (Random Users)
 
 export async function getInstructors(
   params: PaginationParams = {},
@@ -47,7 +41,7 @@ export async function getInstructorById(
   return data.data;
 }
 
-// ─── Courses (Random Products) ──────────────────────────────────────────────
+// Courses (Random Products)
 
 interface CourseQueryParams extends PaginationParams {
   query?: string;

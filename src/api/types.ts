@@ -91,4 +91,11 @@ export interface ApiRandomProduct {
   images: string[];
 }
 
-
+// Paginated wrapper returned by list endpoints
+export interface PaginatedData<T> {
+  data: T[];
+  totalItems: number;
+  page: number;
+  limit: number;
+  totalPages: number;
+}

@@ -9,6 +9,7 @@ import type {
   ApiResponse,
   ApiUser,
   LoginPayload,
+  PaginatedData,
   RegisterPayload,
 } from './types';
 
@@ -18,5 +19,6 @@ export type {
   ApiResponse,
   ApiUser,
   LoginPayload,
+  PaginatedData,
   RegisterPayload,
 };

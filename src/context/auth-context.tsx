@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { getAccessToken, setTokens, clearTokens } from '@/lib/storage/token-storage';
+import { clearBookmarks } from '@/lib/storage/bookmark-storage';
 import { authApi } from '@/api';
 import type { ApiUser } from '@/api/types';
 
@@ -67,6 +68,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       console.warn('Logout API call failed, clearing tokens locally anyway:', e);
     } finally {
       await clearTokens();
+      await clearBookmarks();
       setIsAuthenticated(false);
       setUser(null);
     }

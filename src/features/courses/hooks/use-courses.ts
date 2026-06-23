@@ -1,7 +1,9 @@
+import { useFocusEffect } from 'expo-router';
+import { useCallback, useEffect, useRef, useState } from 'react';
+
 import { getCourses, getInstructors } from '@/api/courses.api';
 import { ApiRandomProduct, ApiRandomUser } from '@/api/types';
 import { getBookmarkedCourseIds, toggleBookmark } from '@/lib/storage/bookmark-storage';
-import { useCallback, useEffect, useRef, useState } from 'react';
 
 export function useCourses() {
   const [courses, setCourses] = useState<ApiRandomProduct[]>([]);
@@ -61,6 +63,21 @@ export function useCourses() {
       }
     };
   }, [fetchData]);
+
+  // Synchronize bookmarks when screen gains focus
+  useFocusEffect(
+    useCallback(() => {
+      let isMounted = true;
+      getBookmarkedCourseIds().then((bookmarks) => {
+        if (isMounted) {
+          setBookmarkedIds(bookmarks);
+        }
+      });
+      return () => {
+        isMounted = false;
+      };
+    }, [])
+  );
 
   // Load more pages (infinite scroll)
   const loadMore = useCallback(async () => {

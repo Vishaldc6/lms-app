@@ -1,5 +1,6 @@
 import { Ionicons } from "@expo/vector-icons";
 import { Image } from "expo-image";
+import { useRouter } from "expo-router";
 import { memo, useState } from "react";
 import {
   ActivityIndicator,
@@ -22,6 +23,7 @@ interface CourseCardProps {
 
 export const CourseCard = memo(
   ({ item, instructor, isBookmarked, onBookmarkToggle }: CourseCardProps) => {
+    const router = useRouter();
     const colors = useTheme();
     const styles = useStyles();
     const { scale } = useResponsive();
@@ -33,7 +35,10 @@ export const CourseCard = memo(
       words.length >= 2 ? `${words[0]} ${words[1]}` : words[0];
 
     return (
-      <View style={styles.card}>
+      <Pressable
+        style={styles.card}
+        onPress={() => router.push(`/course/${item.id}`)}
+      >
         <View style={styles.thumbnailContainer}>
           {/* Placeholder container */}
           {(imageLoading || imageError) && (
@@ -69,10 +74,6 @@ export const CourseCard = memo(
           <Pressable
             style={styles.bookmarkOverlay}
             onPress={() => onBookmarkToggle(item.id)}
-            android_ripple={{
-              color: "rgba(255, 255, 255, 0.3)",
-              borderless: true,
-            }}
           >
             <Ionicons
               name={isBookmarked ? "bookmark" : "bookmark-outline"}
@@ -135,7 +136,7 @@ export const CourseCard = memo(
             </View>
           )}
         </View>
-      </View>
+      </Pressable>
     );
   },
 );

@@ -1,11 +1,18 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from 'expo-router';
-import { useColorScheme, ActivityIndicator, View } from 'react-native';
-import { Stack, useRouter, useSegments } from 'expo-router';
-import { useEffect } from 'react';
+import {
+  DarkTheme,
+  DefaultTheme,
+  Stack,
+  ThemeProvider,
+  useRouter,
+  useSegments,
+} from "expo-router";
+import { useEffect } from "react";
+import { ActivityIndicator, useColorScheme, View } from "react-native";
 
-import { AnimatedSplashOverlay } from '@/components/animated-icon';
-import { AuthProvider, useAuth } from '@/context/auth-context';
-import { useNotifications } from '@/hooks/use-notifications';
+import { AnimatedSplashOverlay } from "@/components/animated-icon";
+import { OfflineBanner } from "@/components/common/offline-banner";
+import { AuthProvider, useAuth } from "@/context/auth-context";
+import { useNotifications } from "@/hooks/use-notifications";
 
 function NavigationGuard() {
   const { isAuthenticated, isLoading } = useAuth();
@@ -15,20 +22,20 @@ function NavigationGuard() {
   useEffect(() => {
     if (isLoading) return;
 
-    const inAuthGroup = segments[0] === '(auth)';
+    const inAuthGroup = segments[0] === "(auth)";
 
     if (!isAuthenticated && !inAuthGroup) {
       // Redirect to login if not authenticated and not in auth group
-      router.replace('/(auth)/login');
+      router.replace("/(auth)/login");
     } else if (isAuthenticated && inAuthGroup) {
       // Redirect to home (index) if authenticated and in auth group
-      router.replace('/');
+      router.replace("/");
     }
   }, [isAuthenticated, isLoading, segments]);
 
   if (isLoading) {
     return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
         <ActivityIndicator size="large" />
       </View>
     );
@@ -61,8 +68,9 @@ export default function RootLayout() {
   useNotifications();
 
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+    <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
       <AuthProvider>
+        <OfflineBanner />
         <AnimatedSplashOverlay />
         <NavigationGuard />
       </AuthProvider>

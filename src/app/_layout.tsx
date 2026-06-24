@@ -5,6 +5,7 @@ import { useEffect } from 'react';
 
 import { AnimatedSplashOverlay } from '@/components/animated-icon';
 import { AuthProvider, useAuth } from '@/context/auth-context';
+import { useNotifications } from '@/hooks/use-notifications';
 
 function NavigationGuard() {
   const { isAuthenticated, isLoading } = useAuth();
@@ -57,6 +58,8 @@ function NavigationGuard() {
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
+  useNotifications();
+
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
       <AuthProvider>

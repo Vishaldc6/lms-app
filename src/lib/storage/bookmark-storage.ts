@@ -1,5 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ASYNC_STORAGE_KEYS } from '@/lib/constants';
+import { checkAndTriggerBookmarkMilestone } from '../notifications';
 
 export async function getBookmarkedCourseIds(): Promise<number[]> {
   try {
@@ -30,6 +31,11 @@ export async function toggleBookmark(courseId: number): Promise<boolean> {
       updated = [...current, courseId];
     }
     await saveBookmarkedCourseIds(updated);
+
+    if (updated.length >= 5) {
+      await checkAndTriggerBookmarkMilestone(updated.length);
+    }
+
     return !isBookmarked; // returns the new state (true if bookmarked, false if unbookmarked)
   } catch (error) {
     console.error('Error toggling bookmark', error);

@@ -133,6 +133,8 @@ export default function HomeScreen() {
       ) : (
         <LegendList
           data={courses}
+          extraData={bookmarkedIds}
+          recycleItems={true}
           keyExtractor={(item) => item.id.toString()}
           renderItem={renderCourseItem}
           contentContainerStyle={styles.listContainer}
